@@ -17,15 +17,51 @@ int main(){
     //One, Highest, Add
       //Add option for stat creation
 
+  //Menu
+  std::cout << "What would you like to do?\n\t1. Highest of a number of rolls\n\t2. Add a few die and subtract some\n\t3. Roll just one dice (BASIC)\n";
+  while(true)
+  {
+    if(std::cin >> choice && choice > 0 && choice < 4)
+    {
+      std::cout << "Ayt leggo->\n";
+      break;
+    }
+    else
+    {
+      std::cout << "Now that wasn't nice. Bad Input >:(\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Another one: ";
+    }
+  }
+
+  switch(choice)
+  {
+    case 1:
+      Highest(total);
+      break;
+    case 2:
+      Add(total);
+      break;
+    case 3:
+      Dice(Side());
+      break;
+  }
+
+  std::cout << "Here's your result: " << total << std::endl;
   //DEBUG
-  std::cout << "DEBUG TIME:\n HIGHEST():\n";
+  {
+  /*std::cout << "DEBUG TIME:\n HIGHEST():\n";
   Highest(total);
   std::cout << "Final result: " << total <<"\n ADD():\n";
   Add(total);
-  std::cout << "Final result: " << total;
+  std::cout << "Final result: " << total;*/
+  }
 
   return 0;
 }
+
+//Stat roll
 
 //Take highest X of Y rolls
 void Highest(int &total){
@@ -105,7 +141,7 @@ void Add(int &total){
   int side = Side();
 
   int add{0};
-  std::cout << "It's very simple! First enter how many dice you want to roll and add: ";
+  std::cout << "First enter how many dice you want to roll and add: ";
   while(true)
   {
     if(std::cin >> add && add > 0)
@@ -189,8 +225,7 @@ int Side(){
 
 
 //Dice function
-int Dice(int side)
-{
+int Dice(int side){
     //result variable to output the result
     int result{ 0 };
     //Limit function to only allow 4, 6, 8, 10, 12, 20, 100 sided die
@@ -204,7 +239,7 @@ int Dice(int side)
     case 20:
     case 100:
         result = ((rand() % side) + 1); //Add 1 to result since '0' is not a possible role
-        std::cout << "Rolled " << side << "-sided die, result: " << result << std::endl;
+        //std::cout << "Rolled " << side << "-sided die, result: " << result << std::endl;
         return result;
     default:
         return 0;
