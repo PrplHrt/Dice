@@ -1,3 +1,193 @@
+#include <iostream>
+#include <ctime>
+#include <limits>
+
+int Dice(int side);
+void Highest(int &total);
+void Add(int &total);
+int Side();
+
+int main(){
+  srand(time(NULL));
+  int total{0}, choice{0};
+
+  std::cout << "Welcome to this BASIC AS BREAD dice function!\n";
+
+  //Menu for which function to use
+    //One, Highest, Add
+      //Add option for stat creation
+
+  //DEBUG
+  std::cout << "DEBUG TIME:\n HIGHEST():\n";
+  Highest(total);
+  std::cout << "Final result: " << total <<"\n ADD():\n";
+  Add(total);
+  std::cout << "Final result: " << total;
+
+  return 0;
+}
+
+//Take highest X of Y rolls
+void Highest(int &total){
+  total = 0;
+
+  int side = Side();
+
+  int all{0};
+  std::cout << "Ayt, how many die we rolling: ";
+  while(true)
+  {
+    if(std::cin >> all && all > 0)
+    {
+      std::cout << "Coolio!\n";
+      break;
+    }
+    else
+    {
+      std::cout << "Bruh... Only numbers, and not less than one...\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Now do it again: ";
+    }
+  }
+
+  int* rolls = new int[all];
+
+  for(int i{0}; i < all; i++)
+  {
+    rolls[i] = Dice(side);
+  }
+
+  int highest{0};
+  std::cout << "So how many we actually taking: ";
+  while(true)
+  {
+    if(std::cin >> highest && highest >= 0 && highest < all)
+    {
+      std::cout << "Coolio!\n";
+      break;
+    }
+    else
+    {
+      std::cout << "Bruh... Only numbers... and you cannot pick more die than you have\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Now do it again: ";
+    }
+  }
+
+  int temp{0};
+  for(int i{0}; i<(all-1); i++)
+  {
+    for(int j{i+1}; j < all; j++)
+    {
+      if(rolls[i] < rolls[j])
+      {
+        temp = rolls[i];
+        rolls[i] = rolls[j];
+        rolls[j] = temp;
+      }
+    }
+  }
+
+  for(int i{0}; i < highest; i++)
+  {
+    total += rolls[i];
+  }
+
+  delete[] rolls;
+  }
+
+//Add and subtract
+void Add(int &total){
+  total = 0;
+
+  int side = Side();
+
+  int add{0};
+  std::cout << "It's very simple! First enter how many dice you want to roll and add: ";
+  while(true)
+  {
+    if(std::cin >> add && add > 0)
+    {
+      std::cout << "Coolio!\n";
+      break;
+    }
+    else
+    {
+      std::cout << "Bruh... Only numbers, and not less than one...\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Now do it again: ";
+    }
+  }
+
+  for(int i{0}; i < add; i++)
+  {
+    total += Dice(side);
+  }
+
+  int minus{0};
+  std::cout << "Now, all you gotta do is tell me how many dice you wanna roll to subtract from the addition you just did: ";
+  std::cin >> minus;
+  while(true)
+  {
+    if(std::cin >> minus && minus < add && minus > 0)
+    {
+      std::cout << "Coolio!\n";
+      break;
+    }
+    else
+    {
+      std::cout << "Bruh... Only numbers, and not less than one... and for goodness' sake don't subtract more dice than you add :(\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Now do it again: ";
+    }
+  }
+
+  for(int i{0}; i < minus; i++)
+  {
+    total -= Dice(side);
+  }
+
+}
+
+
+int Side(){
+  int side{0};
+  std::cout << "Real quick how many sides are in the die: ";
+  while(true)
+  {
+    if(std::cin >> side)
+    {
+      switch (side)
+      {
+        case 4:
+        case 6:
+        case 8:
+        case 10:
+        case 12:
+        case 20:
+        case 100:
+          std::cout << "Arigatou!\n";
+          return side;
+        default:
+          std::cout << "There are no die with " << side << " sides\n AGAIN!: ";
+        }
+      }
+      else
+      {
+        std::cout << "You trying to crash this thing?\n";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Once more bugger: ";
+      }
+    }
+
+}
+
+
 //Dice function
 int Dice(int side)
 {
