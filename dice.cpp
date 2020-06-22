@@ -6,6 +6,8 @@ int Dice(int side);
 void Highest(int &total);
 void Add(int &total);
 int Side();
+void Stats();
+int Highest(int all,int highest,int side);
 
 int main(){
   srand(time(NULL));
@@ -13,15 +15,11 @@ int main(){
 
   std::cout << "Welcome to this BASIC AS BREAD dice function!\n";
 
-  //Menu for which function to use
-    //One, Highest, Add
-      //Add option for stat creation
-
   //Menu
-  std::cout << "What would you like to do?\n\t1. Highest of a number of rolls\n\t2. Add a few die and subtract some\n\t3. Roll just one dice (BASIC)\n";
+  std::cout << "What would you like to do?\n\t1. Highest of a number of rolls\n\t2. Add a few die and subtract some\n\t3. Roll just one dice (BASIC)\n\t4. STAT rolling go brrrrr\n";
   while(true)
   {
-    if(std::cin >> choice && choice > 0 && choice < 4)
+    if(std::cin >> choice && choice > 0 && choice < 5)
     {
       std::cout << "Ayt leggo->\n";
       break;
@@ -46,22 +44,27 @@ int main(){
     case 3:
       Dice(Side());
       break;
+    case 4:
+      Stats();
   }
 
-  std::cout << "Here's your result: " << total << std::endl;
-  //DEBUG
-  {
-  /*std::cout << "DEBUG TIME:\n HIGHEST():\n";
-  Highest(total);
-  std::cout << "Final result: " << total <<"\n ADD():\n";
-  Add(total);
-  std::cout << "Final result: " << total;*/
-  }
+  if(choice != 4)
+    std::cout << "Here's your result: " << total << std::endl;
+
+  std::cout << "Thanks :3\n";
 
   return 0;
 }
 
 //Stat roll
+void Stats(){
+  std::cout << "Hey you want some STATS???? I'll give you STATS!!!!\n";
+
+  for(int i{1}; i <= 6; i++)
+  {
+    std::cout << "STAT " << i << ": " << Highest(4, 3, 6) << '\n';
+  }
+}
 
 //Take highest X of Y rolls
 void Highest(int &total){
@@ -245,3 +248,36 @@ int Dice(int side){
         return 0;
     }
 }
+
+int Highest(int all,int highest,int side){
+  int total{0};
+
+  int* rolls = new int[all];
+
+  for(int i{0}; i < all; i++)
+  {
+    rolls[i] = Dice(side);
+  }
+
+  int temp{0};
+  for(int i{0}; i<(all-1); i++)
+  {
+    for(int j{i+1}; j < all; j++)
+    {
+      if(rolls[i] < rolls[j])
+      {
+        temp = rolls[i];
+        rolls[i] = rolls[j];
+        rolls[j] = temp;
+      }
+    }
+  }
+
+  for(int i{0}; i < highest; i++)
+  {
+    total += rolls[i];
+  }
+
+  delete[] rolls;
+  return total;
+  }
